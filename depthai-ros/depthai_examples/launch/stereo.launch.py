@@ -242,13 +242,17 @@ def generate_launch_description():
     ld.add_action(declare_LRchecktresh_cmd)
     ld.add_action(declare_monoResolution_cmd)
 
-    ld.add_action(stereo_node)
-    #ld.add_action(urdf_launch)
+
 
     ld.add_action(declare_enableDotProjector_cmd)
     ld.add_action(declare_enableFloodLight_cmd)
     ld.add_action(declare_dotProjectormA_cmd)
     ld.add_action(declare_floodLightmA_cmd)
+
+    
+    ld.add_action(stereo_node)
+    #ld.add_action(urdf_launch)
+
 
     ld.add_action(metric_converter_node)
     ld.add_action(point_cloud_node)
