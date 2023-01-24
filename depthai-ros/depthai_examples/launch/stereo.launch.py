@@ -30,10 +30,15 @@ def generate_launch_description():
     mode           = LaunchConfiguration('mode', default = 'depth')
     lrcheck        = LaunchConfiguration('lrcheck', default = True)
     extended       = LaunchConfiguration('extended', default = True)
-    subpixel       = LaunchConfiguration('subpixel', default = False)
-    confidence     = LaunchConfiguration('confidence', default = 200)
+    subpixel       = LaunchConfiguration('subpixel', default = True)
+    confidence     = LaunchConfiguration('confidence', default = 222)
     LRchecktresh   = LaunchConfiguration('LRchecktresh', default = 5)
     monoResolution = LaunchConfiguration('monoResolution',  default = '400p')
+
+    enableDotProjector = LaunchConfiguration('enableDotProjector', default = True)
+    enableFloodLight   = LaunchConfiguration('enableFloodLight', default = False)
+    dotProjectormA     = LaunchConfiguration('dotProjectormA', default = 900.0)
+    floodLightmA       = LaunchConfiguration('floodLightmA', default = 200.0)
 
     declare_camera_model_cmd = DeclareLaunchArgument(
         'camera_model',
@@ -120,6 +125,26 @@ def generate_launch_description():
         default_value=monoResolution,
         description='Contains the resolution of the Mono Cameras. Available resolutions are 800p, 720p & 400p for OAK-D & 480p for OAK-D-Lite.')
 
+    declare_enableDotProjector_cmd = DeclareLaunchArgument(
+        'enableDotProjector',
+        default_value=enableDotProjector,
+        description='set this to true to enable the dot projector structure light (Available only on Pro models).')
+    
+    declare_enableFloodLight_cmd = DeclareLaunchArgument(
+        'enableFloodLight',
+        default_value=enableFloodLight,
+        description='Set this to true to enable the flood light for night vision (Available only on Pro models).')
+   
+    declare_dotProjectormA_cmd = DeclareLaunchArgument(
+        'dotProjectormA',
+        default_value=dotProjectormA,
+        description='Set the mA at which you intend to drive the dotProjector. Default is set to 200mA.')
+
+    declare_floodLightmA_cmd = DeclareLaunchArgument(
+        'floodLightmA',
+        default_value=floodLightmA,
+        description='Set the mA at which you intend to drive the FloodLight. Default is set to 200mA.')
+
     urdf_launch = IncludeLaunchDescription(
                             launch_description_sources.PythonLaunchDescriptionSource(
                                     os.path.join(urdf_launch_dir, 'urdf_launch.py')),
@@ -144,7 +169,12 @@ def generate_launch_description():
                         {'subpixel': subpixel},
                         {'confidence': confidence},
                         {'LRchecktresh': LRchecktresh},
-                        {'monoResolution': monoResolution}])
+                        {'monoResolution': monoResolution},
+                        {'enableDotProjector':enableDotProjector},
+                        {'enableFloodLight':        enableFloodLight},
+                        {'dotProjectormA':          dotProjectormA},
+                        {'floodLightmA':            floodLightmA}
+                        ])
 
 
     metric_converter_node = launch_ros.actions.ComposableNodeContainer(
@@ -213,6 +243,11 @@ def generate_launch_description():
 
     ld.add_action(stereo_node)
     #ld.add_action(urdf_launch)
+
+    ld.add_action(declare_enableDotProjector_cmd)
+    ld.add_action(declare_enableFloodLight_cmd)
+    ld.add_action(declare_dotProjectormA_cmd)
+    ld.add_action(declare_floodLightmA_cmd)
 
     ld.add_action(metric_converter_node)
     ld.add_action(point_cloud_node)
