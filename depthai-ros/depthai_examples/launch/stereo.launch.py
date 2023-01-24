@@ -30,14 +30,14 @@ def generate_launch_description():
     mode           = LaunchConfiguration('mode', default = 'depth')
     lrcheck        = LaunchConfiguration('lrcheck', default = True)
     extended       = LaunchConfiguration('extended', default = True)
-    subpixel       = LaunchConfiguration('subpixel', default = True)
+    subpixel       = LaunchConfiguration('subpixel', default = False)
     confidence     = LaunchConfiguration('confidence', default = 222)
     LRchecktresh   = LaunchConfiguration('LRchecktresh', default = 5)
     monoResolution = LaunchConfiguration('monoResolution',  default = '400p')
 
     enableDotProjector = LaunchConfiguration('enableDotProjector', default = True)
     enableFloodLight   = LaunchConfiguration('enableFloodLight', default = False)
-    dotProjectormA     = LaunchConfiguration('dotProjectormA', default = 900.0)
+    dotProjectormA     = LaunchConfiguration('dotProjectormA', default = 990.0)
     floodLightmA       = LaunchConfiguration('floodLightmA', default = 200.0)
 
     declare_camera_model_cmd = DeclareLaunchArgument(
@@ -249,7 +249,7 @@ def generate_launch_description():
     ld.add_action(declare_dotProjectormA_cmd)
     ld.add_action(declare_floodLightmA_cmd)
 
-    
+
     ld.add_action(stereo_node)
     #ld.add_action(urdf_launch)
 
