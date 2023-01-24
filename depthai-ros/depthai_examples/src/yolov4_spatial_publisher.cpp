@@ -136,6 +136,7 @@ int main(int argc, char** argv) {
     node->get_parameter("monoResolution", monoResolution);
     node->get_parameter("resourceBaseFolder", resourceBaseFolder);
 
+
     if(resourceBaseFolder.empty()) {
         throw std::runtime_error("Send the path to the resouce folder containing NNBlob in \'resourceBaseFolder\' ");
     }

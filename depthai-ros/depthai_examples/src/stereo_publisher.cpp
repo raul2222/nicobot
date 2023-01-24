@@ -96,7 +96,9 @@ int main(int argc, char** argv) {
     std::string tfPrefix, mode, monoResolution;
     bool lrcheck, extended, subpixel, enableDepth;
     int confidence, LRchecktresh;
+    double dotProjectormA, floodLightmA;
     int monoWidth, monoHeight;
+    bool enableSpatialDetection, enableDotProjector, enableFloodLight;
     dai::Pipeline pipeline;
 
     node->declare_parameter("tf_prefix", "oak");
@@ -107,6 +109,10 @@ int main(int argc, char** argv) {
     node->declare_parameter("confidence", 200);
     node->declare_parameter("LRchecktresh", 5);
     node->declare_parameter("monoResolution", "720p");
+    node->declare_parameter("enableDotProjector", false);
+    node->declare_parameter("enableFloodLight", false);
+    node->declare_parameter("dotProjectormA", 200.0);
+    node->declare_parameter("floodLightmA", 200.0);
 
     node->get_parameter("tf_prefix", tfPrefix);
     node->get_parameter("mode", mode);
@@ -116,12 +122,18 @@ int main(int argc, char** argv) {
     node->get_parameter("confidence", confidence);
     node->get_parameter("LRchecktresh", LRchecktresh);
     node->get_parameter("monoResolution", monoResolution);
+    node->get_parameter("enableDotProjector", enableDotProjector);
+    node->get_parameter("enableFloodLight", enableFloodLight);
+    node->get_parameter("dotProjectormA", dotProjectormA);
+    node->get_parameter("floodLightmA", floodLightmA);
 
     if(mode == "depth") {
         enableDepth = true;
     } else {
         enableDepth = false;
     }
+
+
 
     std::tie(pipeline, monoWidth, monoHeight) = createPipeline(enableDepth, lrcheck, extended, subpixel, confidence, LRchecktresh, monoResolution);
     dai::Device device(pipeline);
@@ -133,6 +145,14 @@ int main(int argc, char** argv) {
     } else {
         stereoQueue = device.getOutputQueue("disparity", 30, false);
     }
+    if(enableDotProjector) {
+        device.setIrLaserDotProjectorBrightness(dotProjectormA);
+    }
+
+    if(enableFloodLight) {
+        device.setIrFloodLightBrightness(floodLightmA);
+    }
+    
 
     auto calibrationHandler = device.readCalibration();
 
