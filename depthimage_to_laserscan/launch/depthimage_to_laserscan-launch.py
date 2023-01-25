@@ -41,7 +41,6 @@ def generate_launch_description():
 )
   ld.add_action(node1)
 
-
 #### tf2 static transforms
 
 ## tf2 - base_footprint to laser
@@ -51,8 +50,8 @@ def generate_launch_description():
     executable='static_transform_publisher',
     output='screen',
     arguments=['0', '0', '0', '0.0', '0.0', '0.0', 'base_footprint', 'face_link'],   
-)
-  ld.add_action(node_tf2_fp2laser)
+  )
+  #ld.add_action(node_tf2_fp2laser)
 
 ## tf2 - base_footprint to map
   node_tf2_fp2map = Node(
@@ -60,9 +59,9 @@ def generate_launch_description():
     package='tf2_ros',
     executable='static_transform_publisher',
     output='screen',
-    arguments=['0', '0', '0', '0.0', '0.0', '0.0', 'base_footprint', 'map'], 
-)
-  ld.add_action(node_tf2_fp2map)
+    arguments=['0', '0', '0', '0.0', '0.0', '0.0', 'base_footprint', 'map'],  
+  )
+  #ld.add_action(node_tf2_fp2map)
 
 ## tf2 - base_footprint to odom
   node_tf2_fp2odom = Node(
@@ -71,8 +70,17 @@ def generate_launch_description():
     executable='static_transform_publisher',
     output='screen',
     arguments=['0', '0', '0', '0.0', '0.0', '0.0', 'base_footprint', 'odom'],
-)
-  ld.add_action(node_tf2_fp2odom)
+  )
+  #ld.add_action(node_tf2_fp2odom)
+
+  node_tf2_laser = Node(
+    name='tf2_ros_fp_odom',
+    package='tf2_ros',
+    executable='static_transform_publisher',
+    output='screen',
+    arguments=['0', '0', '0', '0.0', '0.0', '0.0', 'base_footprint', 'odom'],
+  )
+  #ld.add_action(node_tf2_fp2odom)
 
 
 ## Later, at the end...
